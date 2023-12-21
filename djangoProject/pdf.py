@@ -7,10 +7,10 @@ import uuid
 
 def pdf(request):
     name = request.GET.get('name')
-    names = uuid.uuid1()
+    print(name)
     try:
         pdf_file = 'D:/pdftohtml/' + name + '.pdf'
-        docx_file = 'D:/pdftohtml/' + name + '.docx'
+        docx_file = 'D:/pdftohtml/' + str(uuid.uuid4()) + name + '.docx'
         # convert pdf to docx
         cv = Converter(pdf_file)
         cv.convert(docx_file)  # all pages by default

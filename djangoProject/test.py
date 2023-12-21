@@ -1,9 +1,10 @@
 import xlrd2
 import cpca
 import openpyxl
+import re
 
 
-class Employee():
+class Employee:
     def __init__(self, content, sheng, shi, xian):
         self.content = content
         self.sheng = sheng
@@ -12,7 +13,8 @@ class Employee():
 
     def print_hi():
         # xlsx = xlrd2.open_workbook('D:/合约商机线上数据-给到振坤.xlsx')
-        xlsx = xlrd2.open_workbook('D:/A-全国物业注册地址-9.2.xlsx')
+        # xlsx = xlrd2.open_workbook('D:/only_keys分类_1009 - 副本.xlsx')
+        xlsx = xlrd2.open_workbook('D:/尾词1106-精确词加尾词.xlsx')
         #  ExcelReader reader2 = ExcelUtil.getReader("D:/合约商机线上数据-给到振坤1.xlsx", 2);
         # 通过sheet名查找：xlsx.sheet_by_name("sheet1")
         # 通过索引查找：xlsx.sheet_by_index(3)
@@ -57,14 +59,22 @@ class Employee():
         outws.cell(1, 4).value = "区"  # 第1行第4列
         # 循环填入数据
         for i in range(len(list1)):
-            outws.cell(i + 2, 1).value = list1[i].content  # 第1列
+            ILLEGAL_CHARACTERS_RE = re.compile(r'[\000-\010]|[\013-\014]|[\016-\037]')
+            text = ILLEGAL_CHARACTERS_RE.sub(r'', list1[i].content)
+            # outws.cell(i + 2, 1).value = list1[i].content  # 第1列
+            outws.cell(i + 2, 1).value = text  # 第1列
             outws.cell(i + 2, 2).value = str(list1[i].sheng[0])  # 第2列
             outws.cell(i + 2, 3).value = str(list1[i].shi[0])  # 第3列
             outws.cell(i + 2, 4).value = str(list1[i].xian[0])  # 第4列
-        outwb.save('A-全国物业注册地址-9.2结果1.xls')
+        # outwb.save('20230512.xls')
+        outwb.save('20231106.xls')
 
 
 if __name__ == '__main__':
-    # df = cpca.transform_text_with_addrs("广东省深圳市龙华区")
+    # dd = cpca.transform("广东省广州市从化市 太平镇下大埔二街路口")
+    # print(dd)
+    # df1=addr_df = cpca.transform_text_with_addrs("广东省广州市从化市 太平镇下大埔二街路口", pos_sensitive=True)
+    # print(df1)
+    # df = cpca.transform_text_with_addrs("广东省广州市从化市 太平镇下大埔二街路口")
     # print(df)
     Employee.print_hi()
